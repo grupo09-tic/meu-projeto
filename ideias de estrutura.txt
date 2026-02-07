@@ -1,0 +1,60 @@
+Excelente escolha. O DER (Diagrama de Entidade e Relacionamento) é a base para garantir que seu sistema Node.js seja escalável e que os dados não fiquem inconsistentes, especialmente em um cenário com múltiplas empresas e denúncias anônimas.
+
+Abaixo, apresento a estrutura lógica e o detalhamento das tabelas.
+
+🗄️ Estrutura das Tabelas (Esquema Relacional)
+1. Núcleo de Estrutura (Multi-empresa)
+empresas: id, nome, cnpj, plano, criado_em
+
+departamentos: id, empresa_id (FK), nome, gestor_id (FK)
+
+usuarios: id, empresa_id (FK), departamento_id (FK), nome, email, senha, cargo, tipo_permissao (ADMIN, RH, COLABORADOR)
+
+2. Módulo de Avaliações (Questionários)
+questionarios: id, empresa_id (FK), titulo, descricao, data_inicio, data_fim, ativo (boolean)
+
+questoes: id, questionario_id (FK), texto, tipo (MULTIPLA_ESCOLHA, TEXTO, ESCALA)
+
+respostas_questionario: id, questao_id (FK), usuario_id (FK), resposta_texto, opcao_selecionada
+
+3. Comunicação e Feedback
+avisos: id, empresa_id (FK), titulo, conteudo, data_expiracao, criado_por (FK)
+
+arquivos: id, empresa_id (FK), nome_arquivo, url_path, tipo_documento, publico_alvo (dept_id)
+
+feedbacks_canais: id, empresa_id (FK), usuario_id (FK - NULL se anônimo), tipo (SUGESTAO, RECLAMACAO, DENUNCIA), assunto, descricao, status (PENDENTE, ANALISE, RESOLVIDO), anonimo (boolean)
+
+🔑 Pontos Chave da Modelagem
+Relacionamento 1:N (Um para Muitos): Uma Empresa tem vários Departamentos; um Departamento tem vários Usuários.
+
+A questão do Anonimato: Na tabela feedbacks_canais, o campo usuario_id deve permitir valores NULL. Se o colaborador marcar "Anônimo" no App, o sistema grava o registro sem vincular o ID dele, garantindo total privacidade.
+
+Integridade Referencial: Ao deletar um departamento, é necessário tratar o que acontece com os usuários vinculados (Regra de Negócio: impedir a exclusão se houver usuários ativos).
+
+💻 Exemplo de Script SQL (PostgreSQL/MySQL)
+SQL
+CREATE TABLE empresas (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(14) UNIQUE NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    empresa_id INTEGER REFERENCES empresas(id) ON DELETE CASCADE,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    permissao VARCHAR(50) DEFAULT 'COLABORADOR'
+);
+
+CREATE TABLE feedbacks_canais (
+    id SERIAL PRIMARY KEY,
+    empresa_id INTEGER REFERENCES empresas(id),
+    usuario_id INTEGER REFERENCES usuarios(id) ON DELETE SET NULL, -- Permite anonimato
+    tipo VARCHAR(50), -- DENUNCIA, RECLAMACAO, SUGESTAO
+    descricao TEXT NOT NULL,
+    status VARCHAR(20) DEFAULT 'PENDENTE',
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

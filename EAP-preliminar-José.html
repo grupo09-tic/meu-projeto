@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAP — Projeto Brisa 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:   #faf8f4;
+  --ink:     #1a1410;
+  --muted:   #7c6f60;
+  --border:  #e0d8cc;
+  --shadow:  rgba(26,20,16,.08);
+
+  --c1: #c1440e; /* raiz */
+  --c2: #1d6fa4; /* gestão */
+  --c3: #1a7a4a; /* infra */
+  --c4: #7c3aab; /* backend */
+  --c5: #b8530a; /* frontend */
+  --c6: #0e7490; /* mobile */
+  --c7: #be185d; /* testes */
+  --c8: #374151; /* deploy */
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+/* grain texture */
+body::after {
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  z-index:999;
+}
+
+.page { max-width: 1280px; margin: 0 auto; padding: 60px 32px 100px; }
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 64px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--ink);
+  animation: rise .7s ease both;
+}
+.header-left { }
+.header-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--c1);
+  margin-bottom: 10px;
+  display: block;
+}
+.header h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ink);
+}
+.header h1 em {
+  font-style: normal;
+  color: var(--c1);
+}
+.header-right {
+  text-align: right;
+}
+.header-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 2.2;
+}
+.header-meta strong { color: var(--ink); }
+
+/* ── ROOT NODE ── */
+.root-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+  animation: rise .5s .1s ease both;
+}
+.root-node {
+  background: var(--c1);
+  color: #fff;
+  border-radius: 16px;
+  padding: 22px 48px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(193,68,14,.25);
+}
+.root-node::after {
+  content: '';
+  position: absolute;
+  bottom: -32px; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 32px;
+  background: var(--border);
+}
+.root-node .code {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  opacity: .7;
+  letter-spacing: .15em;
+  margin-bottom: 4px;
+}
+.root-node h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 900;
+}
+.root-node p {
+  font-size: 12px;
+  opacity: .8;
+  margin-top: 4px;
+}
+
+/* ── LEVEL 1 ROW (connector) ── */
+.l1-connector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+}
+.l1-hline {
+  height: 2px;
+  background: var(--border);
+  width: 92%;
+  margin-top: 32px;
+  position: relative;
+}
+
+/* ── LEVEL 1 COLUMNS ── */
+.l1-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  margin-top: 0;
+  animation: rise .5s .2s ease both;
+}
+@media(max-width:900px) { .l1-row { grid-template-columns: repeat(3,1fr); } }
+@media(max-width:560px) { .l1-row { grid-template-columns: repeat(2,1fr); } }
+
+.l1-node {
+  border-radius: 12px;
+  padding: 16px 12px 14px;
+  text-align: center;
+  position: relative;
+  cursor: default;
+  transition: transform .2s, box-shadow .2s;
+}
+.l1-node:hover { transform: translateY(-3px); box-shadow: 0 10px 28px var(--shadow); }
+.l1-node::before {
+  content: '';
+  position: absolute;
+  top: -32px; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 32px;
+}
+.l1-node .code {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  opacity: .7;
+  margin-bottom: 6px;
+}
+.l1-node h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.l1-node .icon { font-size: 20px; margin-bottom: 6px; display: block; }
+
+/* ── LEVEL 2 SECTION ── */
+.sections {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.section {
+  animation: rise .5s ease both;
+}
+.section:nth-child(1) { animation-delay:.1s }
+.section:nth-child(2) { animation-delay:.15s }
+.section:nth-child(3) { animation-delay:.2s }
+.section:nth-child(4) { animation-delay:.25s }
+.section:nth-child(5) { animation-delay:.3s }
+.section:nth-child(6) { animation-delay:.35s }
+.section:nth-child(7) { animation-delay:.4s }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.l2-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.l2-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  position: relative;
+  overflow: hidden;
+}
+.l2-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 10px 10px 0 0;
+}
+.l2-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+.l2-card-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  margin-bottom: 6px;
+  opacity: .6;
+}
+.l2-card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.l2-card-items {
+  list-style: none;
+}
+.l2-card-items li {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 2px 0;
+  padding-left: 12px;
+  position: relative;
+  line-height: 1.5;
+  font-family: 'DM Mono', monospace;
+}
+.l2-card-items li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+}
+
+/* ── SUMMARY TABLE ── */
+.summary {
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 2px solid var(--ink);
+  animation: rise .5s .5s ease both;
+}
+.summary h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 24px;
+}
+.sum-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+  gap: 12px;
+}
+.sum-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 16px;
+  background: #fff;
+}
+.sum-card .num {
+  font-family: 'Fraunces', serif;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.sum-card .label {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .05em;
+  line-height: 1.5;
+}
+
+/* ── FOOTER ── */
+.footer {
+  margin-top: 64px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes rise {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── COLOR HELPERS ── */
+.cl2 { color:#fff; background:var(--c2); }
+.cl3 { color:#fff; background:var(--c3); }
+.cl4 { color:#fff; background:var(--c4); }
+.cl5 { color:#fff; background:var(--c5); }
+.cl6 { color:#fff; background:var(--c6); }
+.cl7 { color:#fff; background:var(--c7); }
+.cl8 { color:#fff; background:var(--c8); }
+
+.bl2 { background:rgba(29,111,164,.07);  border-color:rgba(29,111,164,.3)  !important; }
+.bl3 { background:rgba(26,122,74,.07);   border-color:rgba(26,122,74,.3)   !important; }
+.bl4 { background:rgba(124,58,171,.07);  border-color:rgba(124,58,171,.3)  !important; }
+.bl5 { background:rgba(184,83,10,.07);   border-color:rgba(184,83,10,.3)   !important; }
+.bl6 { background:rgba(14,116,144,.07);  border-color:rgba(14,116,144,.3)  !important; }
+.bl7 { background:rgba(190,24,93,.07);   border-color:rgba(190,24,93,.3)   !important; }
+.bl8 { background:rgba(55,65,81,.07);    border-color:rgba(55,65,81,.3)    !important; }
+
+.tl2::before { background:var(--c2) !important; }
+.tl3::before { background:var(--c3) !important; }
+.tl4::before { background:var(--c4) !important; }
+.tl5::before { background:var(--c5) !important; }
+.tl6::before { background:var(--c6) !important; }
+.tl7::before { background:var(--c7) !important; }
+.tl8::before { background:var(--c8) !important; }
+
+.vl2 { border-color:var(--c2) !important; }
+.vl3 { border-color:var(--c3) !important; }
+.vl4 { border-color:var(--c4) !important; }
+.vl5 { border-color:var(--c5) !important; }
+.vl6 { border-color:var(--c6) !important; }
+.vl7 { border-color:var(--c7) !important; }
+.vl8 { border-color:var(--c8) !important; }
+
+.nl1c2::before { background:var(--c2); }
+.nl1c3::before { background:var(--c3); }
+.nl1c4::before { background:var(--c4); }
+.nl1c5::before { background:var(--c5); }
+.nl1c6::before { background:var(--c6); }
+.nl1c7::before { background:var(--c7); }
+.nl1c8::before { background:var(--c8); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <span class="header-tag">📐 EAP · Estrutura Analítica do Projeto</span>
+      <h1>Projeto<br><em>Brisa</em></h1>
+    </div>
+    <div class="header-right">
+      <div class="header-meta">
+        <strong>Versão</strong> 1.0.0<br>
+        <strong>Ano</strong> 2026<br>
+        <strong>Tipo</strong> Software Web + Mobile API<br>
+        <strong>Metodologia</strong> WBS / EAP<br>
+        <strong>Norma</strong> PMI · PMBOK 7ª ed.
+      </div>
+    </div>
+  </div>
+
+  <!-- ROOT NODE -->
+  <div class="root-wrap">
+    <div class="root-node">
+      <div class="code">0.0 · RAIZ</div>
+      <h2>Plataforma de Avaliação Organizacional</h2>
+      <p>Sistema de Clima Organizacional — Web Portal + API REST Mobile</p>
+    </div>
+  </div>
+
+  <!-- L1 CONNECTOR LINE -->
+  <div class="l1-connector">
+    <div class="l1-hline"></div>
+  </div>
+
+  <!-- LEVEL 1 NODES -->
+  <div class="l1-row">
+
+    <div class="l1-node nl1c2" style="background:rgba(29,111,164,.08); border:1.5px solid rgba(29,111,164,.3);">
+      <div class="l1-node::before" style="background:var(--c2)"></div>
+      <span class="icon">📌</span>
+      <div class="code" style="color:var(--c2)">1.0</div>
+      <h3 style="color:var(--c2)">Gestão do Projeto</h3>
+    </div>
+
+    <div class="l1-node" style="background:rgba(26,122,74,.08); border:1.5px solid rgba(26,122,74,.3);">
+      <span class="icon">🖥️</span>
+      <div class="code" style="color:var(--c3)">2.0</div>
+      <h3 style="color:var(--c3)">Infraestrutura & Ambiente</h3>
+    </div>
+
+    <div class="l1-node" style="background:rgba(124,58,171,.08); border:1.5px solid rgba(124,58,171,.3);">
+      <span class="icon">⚙️</span>
+      <div class="code" style="color:var(--c4)">3.0</div>
+      <h3 style="color:var(--c4)">Backend Node.js</h3>
+    </div>
+
+    <div class="l1-node" style="background:rgba(184,83,10,.08); border:1.5px solid rgba(184,83,10,.3);">
+      <span class="icon">🎨</span>
+      <div class="code" style="color:var(--c5)">4.0</div>
+      <h3 style="color:var(--c5)">Frontend React</h3>
+    </div>
+
+    <div class="l1-node" style="background:rgba(14,116,144,.08); border:1.5px solid rgba(14,116,144,.3);">
+      <span class="icon">📱</span>
+      <div class="code" style="color:var(--c6)">5.0</div>
+      <h3 style="color:var(--c6)">Integração Mobile</h3>
+    </div>
+
+    <div class="l1-node" style="background:rgba(190,24,93,.08); border:1.5px solid rgba(190,24,93,.3);">
+      <span class="icon">🧪</span>
+      <div class="code" style="color:var(--c7)">6.0</div>
+      <h3 style="color:var(--c7)">Testes & Qualidade</h3>
+    </div>
+
+    <div class="l1-node" style="background:rgba(55,65,81,.08); border:1.5px solid rgba(55,65,81,.3);">
+      <span class="icon">🚀</span>
+      <div class="code" style="color:var(--c8)">7.0</div>
+      <h3 style="color:var(--c8)">Deploy & Entrega</h3>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- LEVEL 2 DETALHAMENTO               -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="sections">
+
+    <!-- 1.0 GESTÃO -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num cl2">1.0 — Gestão do Projeto</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="l2-grid">
+
+        <div class="l2-card bl2 tl2">
+          <div class="l2-card-code" style="color:var(--c2)">1.1</div>
+          <div class="l2-card-title">Iniciação</div>
+          <ul class="l2-card-items">
+            <li>Termo de abertura</li>
+            <li>Identificação de stakeholders</li>
+            <li>Definição de escopo</li>
+            <li>Aprovação do projeto</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl2 tl2">
+          <div class="l2-card-code" style="color:var(--c2)">1.2</div>
+          <div class="l2-card-title">Planejamento</div>
+          <ul class="l2-card-items">
+            <li>EAP / WBS</li>
+            <li>Cronograma</li>
+            <li>Orçamento estimado</li>
+            <li>Plano de riscos</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl2 tl2">
+          <div class="l2-card-code" style="color:var(--c2)">1.3</div>
+          <div class="l2-card-title">Execução & Controle</div>
+          <ul class="l2-card-items">
+            <li>Reuniões de acompanhamento</li>
+            <li>Controle de mudanças</li>
+            <li>Relatórios de progresso</li>
+            <li>Gestão de equipe</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl2 tl2">
+          <div class="l2-card-code" style="color:var(--c2)">1.4</div>
+          <div class="l2-card-title">Encerramento</div>
+          <ul class="l2-card-items">
+            <li>Entrega formal</li>
+            <li>Lições aprendidas</li>
+            <li>Documentação final</li>
+            <li>Aceite do cliente</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2.0 INFRAESTRUTURA -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num cl3">2.0 — Infraestrutura & Ambiente</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="l2-grid">
+
+        <div class="l2-card bl3 tl3">
+          <div class="l2-card-code" style="color:var(--c3)">2.1</div>
+          <div class="l2-card-title">Banco de Dados</div>
+          <ul class="l2-card-items">
+            <li>Instalação PostgreSQL 14+</li>
+            <li>Criação do schema</li>
+            <li>11 tabelas relacionais</li>
+            <li>Extensão uuid-ossp</li>
+            <li>Script init.sql</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl3 tl3">
+          <div class="l2-card-code" style="color:var(--c3)">2.2</div>
+          <div class="l2-card-title">Ambiente de Desenvolvimento</div>
+          <ul class="l2-card-items">
+            <li>Node.js 18+ instalado</li>
+            <li>Variáveis .env configuradas</li>
+            <li>ts-node-dev (hot reload)</li>
+            <li>Vite (frontend dev server)</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl3 tl3">
+          <div class="l2-card-code" style="color:var(--c3)">2.3</div>
+          <div class="l2-card-title">Estrutura de Pastas</div>
+          <ul class="l2-card-items">
+            <li>backend/src/{config, controllers}</li>
+            <li>backend/src/{entities, routes}</li>
+            <li>frontend/src/{pages, components}</li>
+            <li>frontend/src/{contexts, services}</li>
+            <li>database/ + docs/</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl3 tl3">
+          <div class="l2-card-code" style="color:var(--c3)">2.4</div>
+          <div class="l2-card-title">Dados Iniciais (Seed)</div>
+          <ul class="l2-card-items">
+            <li>Script seed.ts</li>
+            <li>Criação de empresa padrão</li>
+            <li>Usuário admin inicial</li>
+            <li>Senha criptografada bcrypt</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3.0 BACKEND -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num cl4">3.0 — Backend Node.js + TypeScript</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="l2-grid">
+
+        <div class="l2-card bl4 tl4">
+          <div class="l2-card-code" style="color:var(--c4)">3.1</div>
+          <div class="l2-card-title">Modelagem de Entidades</div>
+          <ul class="l2-card-items">
+            <li>Empresa</li>
+            <li>Departamento</li>
+            <li>Usuario (enum: admin/rh/colab.)</li>
+            <li>Questionario + Questao</li>
+            <li>OpcaoResposta</li>
+            <li>RespostaQuestionario</li>
+            <li>Aviso · Reclamacao</li>
+            <li>Denuncia · Arquivo</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl4 tl4">
+          <div class="l2-card-code" style="color:var(--c4)">3.2</div>
+          <div class="l2-card-title">Autenticação & Segurança</div>
+          <ul class="l2-card-items">
+            <li>JWT (7 dias expiração)</li>
+            <li>bcryptjs hash de senhas</li>
+            <li>authMiddleware global</li>
+            <li>isAdmin / isRHorAdmin</li>
+            <li>empresa_id extraído do token</li>
+            <li>Interceptor 401 no frontend</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl4 tl4">
+          <div class="l2-card-code" style="color:var(--c4)">3.3</div>
+          <div class="l2-card-title">Controllers CRUD</div>
+          <ul class="l2-card-items">
+            <li>AuthController</li>
+            <li>EmpresaController</li>
+            <li>UsuarioController</li>
+            <li>DepartamentoController</li>
+            <li>QuestionarioController</li>
+            <li>AvisoController</li>
+            <li>ReclamacaoController</li>
+            <li>DenunciaController</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl4 tl4">
+          <div class="l2-card-code" style="color:var(--c4)">3.4</div>
+          <div class="l2-card-title">Rotas API REST</div>
+          <ul class="l2-card-items">
+            <li>POST /auth/login</li>
+            <li>CRUD /empresas</li>
+            <li>CRUD /usuarios</li>
+            <li>CRUD /departamentos</li>
+            <li>CRUD /questionarios</li>
+            <li>POST /questionarios/:id/responder</li>
+            <li>GET /questionarios/:id/resultados</li>
+            <li>CRUD /avisos · /reclamacoes · /denuncias</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl4 tl4">
+          <div class="l2-card-code" style="color:var(--c4)">3.5</div>
+          <div class="l2-card-title">Lógica de Negócio</div>
+          <ul class="l2-card-items">
+            <li>Questionários anônimos</li>
+            <li>Estatísticas por questão</li>
+            <li>Média para escala</li>
+            <li>Contagem múltipla escolha</li>
+            <li>Soft delete (ativo: false)</li>
+            <li>Importação via planilha</li>
+            <li>Respostas anônimas (null user)</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl4 tl4">
+          <div class="l2-card-code" style="color:var(--c4)">3.6</div>
+          <div class="l2-card-title">Servidor Express</div>
+          <ul class="l2-card-items">
+            <li>Porta 3001</li>
+            <li>CORS habilitado</li>
+            <li>Body parser JSON</li>
+            <li>TypeORM synchronize (dev)</li>
+            <li>GET /health (healthcheck)</li>
+            <li>Tratamento de erros global</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4.0 FRONTEND -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num cl5">4.0 — Frontend React + TypeScript</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="l2-grid">
+
+        <div class="l2-card bl5 tl5">
+          <div class="l2-card-code" style="color:var(--c5)">4.1</div>
+          <div class="l2-card-title">Autenticação Web</div>
+          <ul class="l2-card-items">
+            <li>Login.tsx — formulário</li>
+            <li>AuthContext.tsx</li>
+            <li>ProtectedRoute</li>
+            <li>Token no localStorage</li>
+            <li>Logout automático (401)</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl5 tl5">
+          <div class="l2-card-code" style="color:var(--c5)">4.2</div>
+          <div class="l2-card-title">Layout & Navegação</div>
+          <ul class="l2-card-items">
+            <li>Layout.tsx — drawer lateral</li>
+            <li>Menu dinâmico por perfil</li>
+            <li>Item ativo destacado</li>
+            <li>Responsivo (mobile/desktop)</li>
+            <li>AppBar com perfil do usuário</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl5 tl5">
+          <div class="l2-card-code" style="color:var(--c5)">4.3</div>
+          <div class="l2-card-title">Módulo Gestão RH</div>
+          <ul class="l2-card-items">
+            <li>Dashboard.tsx — KPIs</li>
+            <li>Usuarios.tsx — CRUD + avatar</li>
+            <li>Departamentos.tsx — CRUD</li>
+            <li>Importação via planilha</li>
+            <li>Níveis de acesso visuais</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl5 tl5">
+          <div class="l2-card-code" style="color:var(--c5)">4.4</div>
+          <div class="l2-card-title">Módulo Avaliações</div>
+          <ul class="l2-card-items">
+            <li>Questionarios.tsx — CRUD</li>
+            <li>Status rascunho/ativo/enc.</li>
+            <li>Datas de vigência</li>
+            <li>Visualizar resultados</li>
+            <li>Questionário anônimo flag</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl5 tl5">
+          <div class="l2-card-code" style="color:var(--c5)">4.5</div>
+          <div class="l2-card-title">Módulo Comunicação</div>
+          <ul class="l2-card-items">
+            <li>Avisos.tsx — CRUD</li>
+            <li>Prioridade baixa/média/alta</li>
+            <li>Reclamacoes.tsx — abas</li>
+            <li>Resposta do RH</li>
+            <li>Denuncias.tsx — confidencial</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl5 tl5">
+          <div class="l2-card-code" style="color:var(--c5)">4.6</div>
+          <div class="l2-card-title">Serviços & Infra Web</div>
+          <ul class="l2-card-items">
+            <li>api.ts — Axios + interceptors</li>
+            <li>Proxy Vite → localhost:3001</li>
+            <li>Snackbar feedback visual</li>
+            <li>Dialogs MUI para formulários</li>
+            <li>TypeScript tipagem estrita</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5.0 MOBILE -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num cl6">5.0 — Integração Mobile (Android & iOS)</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="l2-grid">
+
+        <div class="l2-card bl6 tl6">
+          <div class="l2-card-code" style="color:var(--c6)">5.1</div>
+          <div class="l2-card-title">API para Mobile</div>
+          <ul class="l2-card-items">
+            <li>Mesma API REST do backend</li>
+            <li>Auth via JWT token</li>
+            <li>Header Authorization: Bearer</li>
+            <li>Respostas JSON padronizadas</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl6 tl6">
+          <div class="l2-card-code" style="color:var(--c6)">5.2</div>
+          <div class="l2-card-title">Telas Mobile Previstas</div>
+          <ul class="l2-card-items">
+            <li>Login / Troca de senha</li>
+            <li>Feed de avisos</li>
+            <li>Responder questionários</li>
+            <li>Envio de reclamação/sugestão</li>
+            <li>Canal de denúncias</li>
+            <li>Biblioteca de arquivos</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl6 tl6">
+          <div class="l2-card-code" style="color:var(--c6)">5.3</div>
+          <div class="l2-card-title">Endpoints Mobile</div>
+          <ul class="l2-card-items">
+            <li>POST /auth/login</li>
+            <li>GET /avisos</li>
+            <li>GET /questionarios</li>
+            <li>POST /questionarios/:id/responder</li>
+            <li>POST /reclamacoes</li>
+            <li>POST /denuncias</li>
+            <li>POST /auth/trocar-senha</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl6 tl6">
+          <div class="l2-card-code" style="color:var(--c6)">5.4</div>
+          <div class="l2-card-title">Plataformas Alvo</div>
+          <ul class="l2-card-items">
+            <li>Android (React Native / Kotlin)</li>
+            <li>iOS (React Native / Swift)</li>
+            <li>Expo (desenvolvimento ágil)</li>
+            <li>CORS configurado p/ mobile</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 6.0 TESTES -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num cl7">6.0 — Testes & Qualidade</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="l2-grid">
+
+        <div class="l2-card bl7 tl7">
+          <div class="l2-card-code" style="color:var(--c7)">6.1</div>
+          <div class="l2-card-title">Testes de API</div>
+          <ul class="l2-card-items">
+            <li>Postman / Insomnia</li>
+            <li>Testar todos os 28 endpoints</li>
+            <li>Validar respostas JSON</li>
+            <li>Testar autenticação JWT</li>
+            <li>Testar permissões por perfil</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl7 tl7">
+          <div class="l2-card-code" style="color:var(--c7)">6.2</div>
+          <div class="l2-card-title">Testes Funcionais Web</div>
+          <ul class="l2-card-items">
+            <li>CRUD de cada módulo</li>
+            <li>Fluxo de login/logout</li>
+            <li>Criação de questionário</li>
+            <li>Submissão de respostas</li>
+            <li>Visualização de resultados</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl7 tl7">
+          <div class="l2-card-code" style="color:var(--c7)">6.3</div>
+          <div class="l2-card-title">Testes de Segurança</div>
+          <ul class="l2-card-items">
+            <li>Acesso sem token (401)</li>
+            <li>Acesso cruzado de empresas</li>
+            <li>Permissões admin/rh/colab.</li>
+            <li>Denúncia anônima</li>
+            <li>Senhas hasheadas no BD</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl7 tl7">
+          <div class="l2-card-code" style="color:var(--c7)">6.4</div>
+          <div class="l2-card-title">Validação de Dados</div>
+          <ul class="l2-card-items">
+            <li>Campos obrigatórios</li>
+            <li>Email único no sistema</li>
+            <li>CNPJ único por empresa</li>
+            <li>Tipos de questão válidos</li>
+            <li>Status de enums válidos</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 7.0 DEPLOY -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num cl8">7.0 — Deploy & Entrega</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="l2-grid">
+
+        <div class="l2-card bl8 tl8">
+          <div class="l2-card-code" style="color:var(--c8)">7.1</div>
+          <div class="l2-card-title">Build de Produção</div>
+          <ul class="l2-card-items">
+            <li>npm run build (frontend)</li>
+            <li>tsc + node dist/ (backend)</li>
+            <li>NODE_ENV=production</li>
+            <li>TypeORM synchronize: false</li>
+            <li>Variáveis seguras no servidor</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl8 tl8">
+          <div class="l2-card-code" style="color:var(--c8)">7.2</div>
+          <div class="l2-card-title">Banco de Dados Produção</div>
+          <ul class="l2-card-items">
+            <li>AWS RDS / Supabase / Neon</li>
+            <li>Backups automáticos</li>
+            <li>SSL na conexão</li>
+            <li>Migrations controladas</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl8 tl8">
+          <div class="l2-card-code" style="color:var(--c8)">7.3</div>
+          <div class="l2-card-title">Hospedagem Backend</div>
+          <ul class="l2-card-items">
+            <li>Render / Railway / Heroku</li>
+            <li>PM2 process manager</li>
+            <li>Variáveis de ambiente</li>
+            <li>HTTPS obrigatório</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl8 tl8">
+          <div class="l2-card-code" style="color:var(--c8)">7.4</div>
+          <div class="l2-card-title">Hospedagem Frontend</div>
+          <ul class="l2-card-items">
+            <li>Vercel / Netlify</li>
+            <li>AWS S3 + CloudFront</li>
+            <li>CDN para assets</li>
+            <li>Deploy automático (CI/CD)</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl8 tl8">
+          <div class="l2-card-code" style="color:var(--c8)">7.5</div>
+          <div class="l2-card-title">Documentação Entregue</div>
+          <ul class="l2-card-items">
+            <li>README.md completo</li>
+            <li>API.md (28 endpoints)</li>
+            <li>QUICK_START.md</li>
+            <li>EAP (este documento)</li>
+            <li>Infográfico técnico</li>
+          </ul>
+        </div>
+
+        <div class="l2-card bl8 tl8">
+          <div class="l2-card-code" style="color:var(--c8)">7.6</div>
+          <div class="l2-card-title">Treinamento & Aceite</div>
+          <ul class="l2-card-items">
+            <li>Manual do usuário RH</li>
+            <li>Manual do colaborador</li>
+            <li>Treinamento presencial/remoto</li>
+            <li>Período de suporte pós-entrega</li>
+            <li>Termo de aceite assinado</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /sections -->
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <h2>Resumo da EAP</h2>
+    <div class="sum-grid">
+      <div class="sum-card vl2" style="border-color:var(--c2)">
+        <div class="num" style="color:var(--c2)">7</div>
+        <div class="label">Macropacotes<br>de Trabalho (Nível 1)</div>
+      </div>
+      <div class="sum-card vl4" style="border-color:var(--c4)">
+        <div class="num" style="color:var(--c4)">34</div>
+        <div class="label">Pacotes de<br>Trabalho (Nível 2)</div>
+      </div>
+      <div class="sum-card vl3" style="border-color:var(--c3)">
+        <div class="num" style="color:var(--c3)">11</div>
+        <div class="label">Entidades no<br>Banco de Dados</div>
+      </div>
+      <div class="sum-card vl6" style="border-color:var(--c6)">
+        <div class="num" style="color:var(--c6)">28</div>
+        <div class="label">Endpoints<br>API REST</div>
+      </div>
+      <div class="sum-card vl5" style="border-color:var(--c5)">
+        <div class="num" style="color:var(--c5)">8</div>
+        <div class="label">Telas Web<br>(Portal RH)</div>
+      </div>
+      <div class="sum-card vl7" style="border-color:var(--c7)">
+        <div class="num" style="color:var(--c7)">3</div>
+        <div class="label">Perfis de<br>Acesso</div>
+      </div>
+      <div class="sum-card vl8" style="border-color:var(--c8)">
+        <div class="num" style="color:var(--c8)">6</div>
+        <div class="label">Telas Mobile<br>Previstas</div>
+      </div>
+      <div class="sum-card" style="border-color:var(--c1)">
+        <div class="num" style="color:var(--c1)">5</div>
+        <div class="label">Documentos<br>de Entrega</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>EAP · Projeto Brisa 2026 &nbsp;·&nbsp; Plataforma de Avaliação Organizacional</p>
+    <p style="margin-top:6px; opacity:.5">Node.js + TypeScript + React + PostgreSQL &nbsp;·&nbsp; API REST Android & iOS</p>
+  </div>
+
+</div>
+</body>
+</html>

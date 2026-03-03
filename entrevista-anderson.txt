@@ -1,0 +1,53 @@
+ferramenta de questionários para empresas. P cadastrar empresas e depois vender essa ferramenta para outra empresa.
+
+doble cadastro (Anexo/outra consultoria)
+
+2 perfis(Anexo/colaboradores)
+Admin: Cadastra os colaboradores e a sua área. Faz também o cadastro do questionário (cadastrar os tipos de questões, objetivas, dissertativa, notas, etc).
+Esse questionário será aplicado a uma pessoa especifica ou a uma empresa.
+
+Aplicativo mobile
+=================================================================================
+Colaborador: Usuário e senha (admin). O usuário recebe uma notificação (push up) sobre o questionário que tem pendente para responder.
+
+Denuncias
+====================================================================================
+O cliente/colaborador decide sobre o anonimato. Se ele se identifica, recebe uma notificação sobre o estado
+Janela para carregar imagens, áudios, etc.
+Tens algum sistema similar pra gente estudar.? (Google forms)
+
+
+Avisos e arquivos
+===================================================================================
+Possibilidade de enviar um arquivo pro colaborador/funcionário, o qual deve ter a possibilidade dele dar o "ciente".
+Possibilidade de enviar arquivo (de férias por exemplo) para cada departamento específico.
+Documentos sobre o "Código de ética" com a mesma funcionalidade (ciente)
+A QUESTÃO DO CIENTE É MUITO IMPORTANTE
+
+Importação de planilhas
+===================================================================================
+
+
+Dashboard
+===================================================================================
+Questionários ativos
+Quantos respondidos
+Qtde denuncias/reclamações por mês
+Todos os dados importantes para gerar insights pra empresa trabalhar sobre
+
+====================================================================================
+Em cada questionário a gente vai ter um contexto. Para questão do questionário também.
+Isso será utilizado para fazer analise com IA. Com analise de sentimento (positivo ou negativo) para aquela questão.
+ESSE CONTEXTO NÃO APARECE PRO USUARIO. É INTERNO.
+
+
+Questionários
+=====================================================================================
+Personalizados em relação a cada departamento ou geral.
+Questões com possibilidade de responder ou não, e outras obrigatórias.
+
+
+
+INTEGRAÇÃO COM IA
+====================================================================================
+Deve ter integração com IA para analise com base nos questionários.

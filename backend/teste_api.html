@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><title>Teste API Proton</title></head>
+<body>
+    <h2>Login</h2>
+    <button onclick="login()">Login</button>
+    <pre id="resultado"></pre>
+    <h2>Rota Protegida</h2>
+    <button onclick="acessarTenants()">Acessar /tenants</button>
+    <pre id="tenants"></pre>
+    <script>
+        let token = '';
+        async function login() {
+            const response = await fetch('http://localhost:3000/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: 'ana@proton.com', senha: '123456' })
+            });
+            const data = await response.json();
+            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+            if (data.dados && data.dados.token) {
+                token = data.dados.token;
+                alert('Token salvo! Agora testa o /tenants');
+            }
+        }
+        async function acessarTenants() {
+            if (!token) {
+                alert('Faça login primeiro!');
+                return;
+            }
+            const response = await fetch('http://localhost:3000/tenants', {
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await response.json();
+            document.getElementById('tenants').innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>

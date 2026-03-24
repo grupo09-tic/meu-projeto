@@ -1,59 +1,15 @@
-# ProjetoTeste
+# 💻 Frontend - Meu Projeto
 
-Projeto de front-end desenvolvido com Next.js, com foco em aprendizado e construção de interfaces modernas.
+Esta é a interface do usuário construída com **Next.js 14**.
 
-## 🚀 Tecnologias utilizadas
+## 🛠️ Tecnologias
+- Next.js (App Router)
+- Tailwind CSS
+- TypeScript
 
-* Next.js
-* React
-* TypeScript
-* Tailwind CSS
+## 🚀 Como rodar localmente
+Certifique-se de ter o Node.js instalado.
 
-## ▶️ Como executar o projeto
-
-Clone o repositório:
-
-git clone https://github.com/anapaula-lacerda/projetoteste.git
-
-Entre na pasta:
-
-cd projetoteste
-
-Instale as dependências:
-
-npm install
-
-Execute o projeto:
-
-npm run dev
-
-Abra no navegador:
-http://localhost:3000
-
-## 📁 Estrutura de pastas
-
-src/
-├── app/
-├── components/
-├── styles/
-public/
-
-## ✨ Funcionalidades
-
-* Login de usuário
-* Validação de formulário
-* Modal de denúncia
-* Navegação entre páginas
-
-## 📚 Aprendizados
-
-Durante o desenvolvimento, foram praticados:
-
-* Componentização no React
-* Uso de hooks
-* Organização de código
-* Integração com APIs
-
-## 👩‍💻 Autora
-
-Desenvolvido por Ana Paula Lacerda
+1. Instale as dependências:
+   ```bash
+   npm install

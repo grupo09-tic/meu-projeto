@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Suas variáveis :root abaixo */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}

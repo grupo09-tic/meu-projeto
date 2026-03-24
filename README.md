@@ -1,23 +1,23 @@
-# ProjetoTeste
+# 🎨 Front-end - Sistema de Denúncias
 
-Projeto de front-end desenvolvido com Next.js, com foco em aprendizado e construção de interfaces modernas.
+Este diretório contém a interface web do sistema de denúncias, desenvolvida com foco em usabilidade e experiência do usuário.
 
-## 🚀 Tecnologias utilizadas
+---
+
+## 🚀 Tecnologias
 
 * Next.js
 * React
 * TypeScript
 * Tailwind CSS
 
-## ▶️ Como executar o projeto
+---
 
-Clone o repositório:
+## ▶️ Como executar
 
-git clone https://github.com/anapaula-lacerda/projetoteste.git
+Acesse a pasta do front-end:
 
-Entre na pasta:
-
-cd projetoteste
+cd frontend
 
 Instale as dependências:
 
@@ -28,32 +28,38 @@ Execute o projeto:
 npm run dev
 
 Abra no navegador:
+
 http://localhost:3000
 
-## 📁 Estrutura de pastas
+---
+
+## ✨ Funcionalidades
+
+* Tela de login
+* Validação de formulário
+* Modal de denúncia
+* Interface responsiva
+
+---
+
+## 📁 Estrutura
 
 src/
 ├── app/
 ├── components/
-├── styles/
-public/
+├──hooks/
+├── services/
+├── utils
 
-## ✨ Funcionalidades
+---
 
-* Login de usuário
-* Validação de formulário
-* Modal de denúncia
-* Navegação entre páginas
+## 🔗 Integração
 
-## 📚 Aprendizados
+Este front-end consome dados do backend do projeto principal.
 
-Durante o desenvolvimento, foram praticados:
-
-* Componentização no React
-* Uso de hooks
-* Organização de código
-* Integração com APIs
+---
 
 ## 👩‍💻 Autora
 
-Desenvolvido por Ana Paula Lacerda
+Ana Paula Ando Lacerda
+Alessandra Denise dos Santos

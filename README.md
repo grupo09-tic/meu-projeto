@@ -1,6 +1,6 @@
-# Front-end - Sistema de Denúncias
+# Front-end
 
-Este diretório contém a interface web do sistema de denúncias, desenvolvida com foco em usabilidade e experiência do usuário.
+Este diretório contém a interface web do sistema, desenvolvida com foco em usabilidade e experiência do usuário.
 
 ---
 
@@ -39,7 +39,7 @@ http://localhost:3000
 * Validação de formulário
 * Modal de denúncia
 * Interface responsiva
-
+* Tela de Dashboard
 ---
 
 ## Estrutura

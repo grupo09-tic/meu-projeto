@@ -1,0 +1,392 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../../../../node_modules/@prisma/tenant"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Rotina {
+  id        BigInt      @id @default(autoincrement()) @map("pkRotina")
+  nome      String      @unique @map("nomeRotina") @db.VarChar(60)
+  version   Int         @default(1)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  logs      Log[]
+  permissao Permissao[]
+  relatorio Relatorio[]
+
+  @@map("tbRotina")
+}
+
+model Acao {
+  id        BigInt      @id @default(autoincrement()) @map("pkAcao")
+  nome      String      @unique @map("nomeAcao") @db.VarChar(60)
+  version   Int         @default(1)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  log       Log[]
+  permissao Permissao[]
+
+  @@map("tbAcao")
+}
+
+model PerfilUsuario {
+  id                     BigInt                   @id @default(autoincrement()) @map("pkPerfilUsuario")
+  nome                   String                   @unique @map("nomePerfilUsuario") @db.VarChar(60)
+  version                Int                      @default(1)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  permissao              Permissao[]
+  relatorioPerfilUsuario RelatorioPerfilUsuario[]
+  usuario                Usuario[]
+
+  @@map("tbPerflUsuario")
+}
+
+model Usuario {
+  id              BigInt         @id @default(autoincrement()) @map("pkUsuario")
+  nome            String         @map("nomeUsuario") @db.VarChar(60)
+  email           String         @unique @db.VarChar(100)
+  senha           String         @db.VarChar(100)
+  ativo           Boolean        @default(true)
+  avatar          String?
+  ultimoIp        String?
+  ultimoAcesso    DateTime?
+  tokenResetSenha String?
+  expiraToken     DateTime?
+  perfilUsuarioId BigInt         @map("fkPerfilUsuario")
+  version         Int            @default(1)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  clienteId       BigInt?        @map("fkCliente")
+  log             Log[]
+  logSession      LogSession[]
+  refreshToken    RefreshToken[]
+  cliente         Cliente?       @relation("UsuarioCliente", fields: [clienteId], references: [id], onDelete: Restrict)
+  perfilUsuario   PerfilUsuario  @relation(fields: [perfilUsuarioId], references: [id])
+
+  @@map("tbUsuario")
+}
+
+model RefreshToken {
+  id        BigInt   @id @default(autoincrement()) @map("pkRefreshToken")
+  token     String   @unique
+  expiresIn DateTime
+  usuarioId BigInt   @map("fkUsuario")
+  createdAt DateTime @default(now())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("tbRefreshToken")
+}
+
+model Permissao {
+  id              BigInt        @id @default(autoincrement()) @map("pkPermissao")
+  permissao       Int           @default(0)
+  perfilUsuarioId BigInt        @map("fkPerfilUsuario")
+  rotinaId        BigInt        @map("fkRotina")
+  acaoId          BigInt        @map("fkAcao")
+  version         Int           @default(1)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  acao            Acao          @relation(fields: [acaoId], references: [id])
+  perfilUsuario   PerfilUsuario @relation(fields: [perfilUsuarioId], references: [id])
+  rotina          Rotina        @relation(fields: [rotinaId], references: [id])
+
+  @@unique([perfilUsuarioId, rotinaId, acaoId])
+  @@map("tbPermissao")
+}
+
+model Log {
+  id        BigInt   @id @default(autoincrement()) @map("pkLog")
+  usuarioId BigInt   @map("fkUsuario")
+  rotinaId  BigInt   @map("fkRotina")
+  acaoId    BigInt   @map("fkAcao")
+  descricao String
+  masterId  BigInt   @map("fkMaster")
+  detailId  BigInt?  @map("fkDetail")
+  createdAt DateTime @default(now())
+  acao      Acao     @relation(fields: [acaoId], references: [id])
+  rotina    Rotina   @relation(fields: [rotinaId], references: [id])
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+
+  @@map("tbLog")
+}
+
+model LogSession {
+  id        BigInt         @id @default(autoincrement()) @map("pkLogSession")
+  acao      LogSessionAcao
+  usuarioId BigInt         @map("fkUsuario")
+  createdAt DateTime       @default(now())
+  usuario   Usuario        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("tbLogSession")
+}
+
+model Cidade {
+  id        BigInt    @id @unique @map("pkCidade")
+  nome      String    @map("nomeCidade") @db.VarChar(40)
+  uf        String    @db.Char(2)
+  cPais     Int       @default(1058)
+  pais      String    @default("BRASIL") @db.VarChar(60)
+  version   Int       @default(1)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  cliente   Cliente[]
+
+  @@unique([nome, uf])
+  @@map("tbCidade")
+}
+
+model Cliente {
+  id             BigInt    @id @default(autoincrement()) @map("pkCliente")
+  ativo          Boolean   @default(true)
+  razaoSocial    String    @db.VarChar(60)
+  nomeFantasia   String?   @db.VarChar(60)
+  fone           String    @db.VarChar(11)
+  email          String    @db.VarChar(200)
+  obs            String?   @db.VarChar(500)
+  urlFoto        String?
+  tipoInscricao  Int       @default(0)
+  cnpjCpf        String    @unique @db.Char(14)
+  endereco       String    @db.VarChar(60)
+  num            String    @db.VarChar(60)
+  comp           String?   @db.VarChar(60)
+  cep            String    @db.Char(8)
+  bairro         String    @db.VarChar(60)
+  cidadeId       BigInt    @map("fkCidade")
+  idAnexo        BigInt?   @map("idAnexo")
+  version        Int       @default(1)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  cidade         Cidade    @relation(fields: [cidadeId], references: [id])
+  usuarioCliente Usuario[] @relation("UsuarioCliente")
+
+  @@map("tbCliente")
+}
+
+model ConfigEmail {
+  id                 BigInt   @id @default(autoincrement()) @map("pkConfigEmail")
+  host               String
+  port               Int
+  user               String
+  pass               String
+  fromName           String
+  fromEmail          String
+  secure             Boolean  @default(true)
+  padraoEsqueciSenha Boolean  @default(true)
+  assunto            String
+  corpo              String
+  version            Int      @default(1)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("tbConfigEmail")
+}
+
+model ConfigStorage {
+  id                     BigInt      @id @default(autoincrement()) @map("pkConfigStorage")
+  storageType            StorageType
+  doSpacesEndpoint       String
+  doSpacesKey            String
+  doSpacesSecret         String
+  doSpacesBucket         String
+  googleDriveClientEmail String
+  googleDrivePrivateKey  String
+  googleDriveFolderId    String
+  version                Int         @default(1)
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+
+  @@map("tbConfigStorage")
+}
+
+model Empresa {
+  id            BigInt        @id @default(autoincrement()) @map("pkEmpresa")
+  nome          String        @map("nomeEmpresa") @db.VarChar(100)
+  version       Int           @default(1)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  colaboradores Colaborador[]
+
+  @@map("tbEmpresa")
+}
+
+model Departamento {
+  id            BigInt        @id @default(autoincrement()) @map("pkDepartamento")
+  nome          String        @map("nomeDepartamento") @db.VarChar(100)
+  version       Int           @default(1)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  colaboradores Colaborador[]
+
+  @@map("tbDepartamento")
+}
+
+model Questionario {
+  id          BigInt                  @id @default(autoincrement()) @map("pkQuestionario")
+  urlVideo    String?                 @map("urlVideo") @db.VarChar(255)
+  dataInicio  DateTime                @map("dataInicio")
+  dataTermino DateTime                @map("dataTermino")
+  identificar Int                     @map("identificar") @db.SmallInt
+  version     Int                     @default(1)
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  aplicacoes  AplicacaoQuestionario[]
+  perguntas   Pergunta[]
+  respostas   Resposta[]
+
+  @@map("tbQuestionario")
+}
+
+model Colaborador {
+  id             BigInt                  @id @default(autoincrement()) @map("pkColaborador")
+  nome           String                  @map("nomeColaborador") @db.VarChar(100)
+  matricula      String                  @map("matricula") @db.VarChar(50)
+  departamentoId BigInt                  @map("fkDepartamento")
+  empresaId      BigInt                  @map("fkEmpresa")
+  version        Int                     @default(1)
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  aplicacoes     AplicacaoQuestionario[]
+  departamento   Departamento            @relation(fields: [departamentoId], references: [id])
+  empresa        Empresa                 @relation(fields: [empresaId], references: [id])
+
+  @@map("tbColaborador")
+}
+
+model Pergunta {
+  id                 BigInt             @id @default(autoincrement()) @map("pkPergunta")
+  descricao          String             @map("descricao") @db.VarChar(255)
+  ordem              Int                @map("ordem") @db.SmallInt
+  tipo               Int                @map("tipo") @db.SmallInt
+  tipoPergunta       Int                @map("tipoPergunta") @db.SmallInt
+  questionarioId     BigInt             @map("fkQuestionario")
+  version            Int                @default(1)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  questionario       Questionario       @relation(fields: [questionarioId], references: [id], onDelete: Cascade)
+  possiveisRespostas PossivelResposta[]
+  respostas          Resposta[]
+
+  @@map("tbPergunta")
+}
+
+model PossivelResposta {
+  id          BigInt     @id @default(autoincrement()) @map("pkPossivelResposta")
+  resposta    String     @map("resposta") @db.VarChar(255)
+  previsao    Int        @map("previsao") @db.SmallInt
+  padrao      Int        @map("padrao") @db.SmallInt
+  dataTermino DateTime   @map("dataTermino")
+  identificar Boolean    @map("identificar")
+  perguntaId  BigInt     @map("fkPergunta")
+  version     Int        @default(1)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  pergunta    Pergunta   @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+  respostas   Resposta[]
+
+  @@map("tbPossivelResposta")
+}
+
+model AplicacaoQuestionario {
+  id             BigInt       @id @default(autoincrement()) @map("pkAplicacaoQuestionario")
+  respondido     Int          @map("respondido") @db.SmallInt
+  colaboradorId  BigInt       @map("fkColaborador")
+  questionarioId BigInt       @map("fkQuestionario")
+  version        Int          @default(1)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  colaborador    Colaborador  @relation(fields: [colaboradorId], references: [id])
+  questionario   Questionario @relation(fields: [questionarioId], references: [id])
+  respostas      Resposta[]
+
+  @@map("tbAplicacaoQuestionario")
+}
+
+model Resposta {
+  id                      BigInt                @id @default(autoincrement()) @map("pkResposta")
+  descricao               String                @map("descricao") @db.VarChar(255)
+  ordem                   Int                   @map("ordem") @db.SmallInt
+  tipo                    Int                   @map("tipo") @db.SmallInt
+  dataTermino             DateTime              @map("dataTermino")
+  identificar             Boolean               @map("identificar")
+  version                 Int                   @default(1)
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  questionarioId          BigInt                @map("fkQuestionario")
+  aplicacaoQuestionarioId BigInt                @map("fkAplicacaoQuestionario")
+  perguntaId              BigInt                @map("fkPergunta")
+  possivelRespostaId      BigInt                @map("fkPossivelResposta")
+  aplicacaoQuestionario   AplicacaoQuestionario @relation(fields: [aplicacaoQuestionarioId], references: [id])
+  pergunta                Pergunta              @relation(fields: [perguntaId], references: [id])
+  possivelResposta        PossivelResposta      @relation(fields: [possivelRespostaId], references: [id])
+  questionario            Questionario          @relation(fields: [questionarioId], references: [id])
+
+  @@map("tbResposta")
+}
+
+model ApiKey {
+  id        Int      @id @default(autoincrement()) @map("pkApiKey")
+  nome      String   @db.VarChar(100)
+  key       String   @unique @db.VarChar(255)
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime @map("dtExpiracao")
+  projetoId BigInt   @map("fkProjeto")
+  projeto   Projeto  @relation(fields: [projetoId], references: [id], onDelete: Cascade)
+
+  @@map("tbApiKey")
+}
+
+model Projeto {
+  id        BigInt   @id @default(autoincrement()) @map("pkProjeto")
+  nome      String   @map("nomeProjeto") @db.VarChar(100)
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  apiKey    ApiKey[]
+
+  @@map("tbProjeto")
+}
+
+model Relatorio {
+  id                     BigInt                   @id @default(autoincrement()) @map("pkRelatorio")
+  nome                   String                   @map("nomeRelatorio") @db.VarChar(100)
+  rotinaId               BigInt                   @map("fkRotina")
+  version                Int                      @default(1)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  rotina                 Rotina                   @relation(fields: [rotinaId], references: [id])
+  relatorioPerfilUsuario RelatorioPerfilUsuario[]
+
+  @@map("tbRelatorio")
+}
+
+model RelatorioPerfilUsuario {
+  id              BigInt        @id @default(autoincrement()) @map("pkRelatorioPerfilUsuario")
+  relatorioId     BigInt        @map("fkRelatorio")
+  perfilUsuarioId BigInt        @map("fkPerfilUsuario")
+  version         Int           @default(1)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  perfilUsuario   PerfilUsuario @relation(fields: [perfilUsuarioId], references: [id])
+  relatorio       Relatorio     @relation(fields: [relatorioId], references: [id])
+
+  @@unique([relatorioId, perfilUsuarioId])
+  @@map("tbRelatorioPerfilUsuario")
+}
+
+enum LogSessionAcao {
+  login
+  logout
+  refresh
+}
+
+enum StorageType {
+  s3
+  googledrive
+}

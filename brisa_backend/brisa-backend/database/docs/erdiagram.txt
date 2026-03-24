@@ -1,0 +1,112 @@
+// https://dbdiagram.io/
+
+Table tbRotina {
+  pkRotina bigint [pk, increment]
+  nomeRotina varchar(60) [unique]
+}
+
+Table tbAcao {
+  pkAcao bigint [pk, increment]
+  nomeAcao varchar(60) [unique]
+}
+
+Table tbPerfilUsuario {
+  pkPerfilUsuario bigint [pk, increment]
+  nomePerfilUsuario varchar(60) [unique]
+}
+
+Table tbUsuario {
+  pkUsuario bigint [pk, increment]
+  nomeUsuario varchar
+  email varchar [unique]
+  senha varchar
+  ativo boolean
+  avatar varchar
+  ultimoIp varchar
+  ultimoAcesso timestamp
+  tokenResetSenha varchar
+  expiraToken timestamp
+  fkPerfilUsuario bigint
+  fkCliente bigint 
+}
+Ref: tbUsuario.fkPerfilUsuario > tbPerfilUsuario.pkPerfilUsuario
+Ref: tbUsuario.fkCliente > tbCliente.pkCliente
+
+Table tbRefreshToken {
+  pkRefreshToken bigint [pk, increment]
+  token varchar [unique]
+  expiresIn timestamp
+  fkUsuario bigint
+  createdAt timestamp
+}
+Ref: tbRefreshToken.fkUsuario > tbUsuario.pkUsuario
+
+Table tbPermissao {
+  pkPermissao bigint [pk, increment]
+  permissao int
+  fkPerfilUsuario bigint
+  fkRotina bigint
+  fkAcao bigint
+}
+Ref: tbPermissao.fkPerfilUsuario > tbPerfilUsuario.pkPerfilUsuario
+Ref: tbPermissao.fkRotina > tbRotina.pkRotina
+Ref: tbPermissao.fkAcao > tbAcao.pkAcao
+
+Table tbLog {
+  pkLog bigint [pk, increment]
+  fkUsuario bigint
+  fkRotina bigint
+  fkAcao bigint
+  descricao varchar
+  fkMaster bigint
+  fkDetail bigint
+  createdAt timestamp
+}
+Ref: tbLog.fkUsuario > tbUsuario.pkUsuario
+Ref: tbLog.fkRotina > tbRotina.pkRotina
+Ref: tbLog.fkAcao > tbAcao.pkAcao
+
+Table tbLogSession {
+  pkLogSession bigint [pk, increment]
+  acao varchar
+  fkUsuario bigint
+  createdAt timestamp
+}
+Ref: tbLogSession.fkUsuario > tbUsuario.pkUsuario
+
+Table tbCidade {
+  pkCidade bigint [pk]
+  nomeCidade varchar
+  uf char
+}
+
+Table tbCliente {
+  pkCliente bigint [pk, increment]
+  ativo boolean
+  razaoSocial varchar(60)
+  nomeFantasia varchar(60)
+  fone varchar(11)
+  email varchar(200)
+  obs varchar(500)
+  tipoInscricao int
+  cnpjCpf char(14) [unique]
+  endereco varchar(60)
+  num varchar(60)
+  comp varchar(60)
+  cep char(8)
+  bairro varchar(60)
+  fkCidade bigint
+}
+Ref: tbCliente.fkCidade > tbCidade.pkCidade
+   
+Table tbConfigStorage {
+  pkConfigStorage bigint [pk, increment]
+  storageType varchar
+  doSpacesEndpoint varchar
+  doSpacesKey varchar
+  doSpacesSecret varchar
+  doSpacesBucket varchar
+  googleDriveClientEmail varchar
+  googleDrivePrivateKey varchar
+  googleDriveFolderId varchar
+}

@@ -1,25 +1,16 @@
 import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Meu Projeto - Login",
-  description: "Sistema de Login Corporativo",
+export const metadata = {
+  title: "Plataforma de Avaliação Organizacional",
+  description: "Projeto TIC 55",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      {/* O className do inter garante que a fonte seja aplicada, 
-          e 'antialiased' ajuda a deixar as letras mais nítidas */}
-      <body className={`${inter.className} antialiased min-h-screen`}>
-        {children}
+      <body className="bg-gray-50">
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );

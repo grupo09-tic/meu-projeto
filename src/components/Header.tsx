@@ -15,8 +15,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full h-16 bg-blue-600 text-white flex items-center justify-between px-6 shadow-md">
-      
+    <header className="w-full h-16 bg-blue-600 text-white flex items-center justify-between px-6 shadow-md fixed top-0 left-0 z-50">
       <div
         onClick={() => router.push("/dashboard")}
         className="text-lg md:text-xl font-semibold cursor-pointer hover:opacity-80 transition"

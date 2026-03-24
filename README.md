@@ -1,10 +1,10 @@
-# 🎨 Front-end - Sistema de Denúncias
+# Front-end - Sistema de Denúncias
 
 Este diretório contém a interface web do sistema de denúncias, desenvolvida com foco em usabilidade e experiência do usuário.
 
 ---
 
-## 🚀 Tecnologias
+## Tecnologias
 
 * Next.js
 * React
@@ -13,7 +13,7 @@ Este diretório contém a interface web do sistema de denúncias, desenvolvida c
 
 ---
 
-## ▶️ Como executar
+## Como executar
 
 Acesse a pasta do front-end:
 
@@ -33,7 +33,7 @@ http://localhost:3000
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 * Tela de login
 * Validação de formulário
@@ -42,7 +42,7 @@ http://localhost:3000
 
 ---
 
-## 📁 Estrutura
+## Estrutura
 
 src/
 ├── app/
@@ -53,13 +53,13 @@ src/
 
 ---
 
-## 🔗 Integração
+## Integração
 
 Este front-end consome dados do backend do projeto principal.
 
 ---
 
-## 👩‍💻 Autora
+## Autoras
 
 Ana Paula Ando Lacerda
 Alessandra Denise dos Santos

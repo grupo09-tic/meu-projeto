@@ -1,8 +1,0 @@
-model Departamento {
-  id   BigInt @id @default(autoincrement()) @map("pkDepartamento")
-  nome String @map("nomeDepartamento") @db.VarChar(100)
-
-  colaboradores Colaborador[]
-
-  @@map("tbDepartamento")
-}

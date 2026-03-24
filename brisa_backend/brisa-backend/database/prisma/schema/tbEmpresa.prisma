@@ -1,0 +1,8 @@
+model Empresa {
+  id   BigInt @id @default(autoincrement()) @map("pkEmpresa")
+  nome String @map("nomeEmpresa") @db.VarChar(100)
+
+  colaboradores Colaborador[]
+
+  @@map("tbEmpresa")
+}

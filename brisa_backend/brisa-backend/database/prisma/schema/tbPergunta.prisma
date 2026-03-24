@@ -1,0 +1,14 @@
+model Pergunta {
+  id             BigInt           @id @default(autoincrement()) @map("pkPergunta")
+  descricao      String           @map("descricao") @db.VarChar(255)
+  ordem          Int              @map("ordem") @db.SmallInt
+  tipo           Int              @map("tipo") @db.SmallInt 
+  tipoPergunta   Int              @map("tipoPergunta") @db.SmallInt 
+  questionarioId BigInt           @map("fkQuestionario")
+
+  questionario   Questionario     @relation(fields: [questionarioId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  possiveisRespostas PossivelResposta[]
+  respostas      Resposta[]
+
+  @@map("tbPergunta")
+}

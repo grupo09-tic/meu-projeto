@@ -1,0 +1,20 @@
+model Resposta {
+  id          BigInt   @id @default(autoincrement()) @map("pkResposta")
+  descricao   String   @map("descricao") @db.VarChar(255)
+  ordem       Int      @map("ordem") @db.SmallInt
+  tipo        Int      @map("tipo") @db.SmallInt
+  dataTermino DateTime @map("dataTermino") @db.Date
+  identificar Boolean  @map("identificar")
+
+  questionarioId          BigInt @map("fkQuestionario")
+  aplicacaoQuestionarioId BigInt @map("fkAplicacaoQuestionario")
+  perguntaId              BigInt @map("fkPergunta")
+  possivelRespostaId      BigInt @map("fkPossivelResposta")
+
+  questionario          Questionario          @relation(fields: [questionarioId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  aplicacaoQuestionario AplicacaoQuestionario @relation(fields: [aplicacaoQuestionarioId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  pergunta              Pergunta              @relation(fields: [perguntaId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  possivelResposta      PossivelResposta      @relation(fields: [possivelRespostaId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+
+  @@map("tbResposta")
+}

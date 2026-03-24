@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ProjetoTeste
 
-## Getting Started
+Projeto de front-end desenvolvido com Next.js, com foco em aprendizado e construção de interfaces modernas.
 
-First, run the development server:
+## 🚀 Tecnologias utilizadas
 
-```bash
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+
+## ▶️ Como executar o projeto
+
+Clone o repositório:
+
+git clone https://github.com/anapaula-lacerda/projetoteste.git
+
+Entre na pasta:
+
+cd projetoteste
+
+Instale as dependências:
+
+npm install
+
+Execute o projeto:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra no navegador:
+http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Estrutura de pastas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+src/
+├── app/
+├── components/
+├── styles/
+public/
 
-## Learn More
+## ✨ Funcionalidades
 
-To learn more about Next.js, take a look at the following resources:
+* Login de usuário
+* Validação de formulário
+* Modal de denúncia
+* Navegação entre páginas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 Aprendizados
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Durante o desenvolvimento, foram praticados:
 
-## Deploy on Vercel
+* Componentização no React
+* Uso de hooks
+* Organização de código
+* Integração com APIs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 👩‍💻 Autora
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Desenvolvido por Ana Paula Lacerda

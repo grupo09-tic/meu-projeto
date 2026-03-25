@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Suas variáveis :root abaixo */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}

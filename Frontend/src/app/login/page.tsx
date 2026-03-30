@@ -35,7 +35,7 @@ export default function Login() {
     // Simulação de Login
     setTimeout(() => {
       if (email === "admin@empresa.com" && senha === "1234") {
-        router.push("/menu-inicial");
+        router.push("/dashboard");
       } else {
         setErro("Usuário ou senha inválidos");
       }
